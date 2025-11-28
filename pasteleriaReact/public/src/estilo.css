@@ -1,0 +1,385 @@
+/*importando las fuentes nuevas*/
+@font-face {
+    font-family: 'MrDafoe';
+    src: url('../font/MrDafoe-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pacifico';
+    src: url('../font/Pacifico-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Nunito';
+    src: url('../font/Nunito.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.icon-award {
+    font-size: 28px;
+    color: gold;
+}
+
+.icon-birthday {
+    font-size: 40px;
+    color: #fff;
+}
+
+/*fondo para el inicio ''index''*/
+.inicio-fondo {
+    position: relative;
+    background-image: url('../img/pastel_index_01.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 60vh;
+    overflow: hidden;
+    z-index: 0;
+}
+
+
+.inicio-fondo::before {
+    content: "";
+    /* obligatorio para ::before */
+    position: absolute;
+    /* para poder posicionarlo */
+    top: 0;
+    /* esquina superior */
+    left: 0;
+    /* esquina izquierda */
+    width: 100%;
+    /* cubrir todo el ancho */
+    height: 100%;
+    /* cubrir todo el alto */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* negro al 10% de opacidad */
+    z-index: 1;
+    /* detrás del texto pero encima de la imagen */
+    pointer-events: none;
+    /* no bloquea clicks sobre el contenido */
+}
+
+/*todo sobre menu inicio ------------------------------------------------*/
+
+.navbar {
+    background-color: rgba(105, 66, 54, 0.6);
+}
+
+.navbar .navbar-logotipo {
+    text-decoration: none;
+    font-family: 'MrDafoe';
+    font-size: 45px;
+    color: #fff !important;
+}
+
+.navbar .nav-link {
+    font-family: 'Pacifico';
+    font-size: 20px;
+    color: #fff !important;
+}
+
+/* Hover de links del navbar */
+.navbar .nav-link:hover {
+    color: bisque !important;
+}
+
+.navbar .navbar-logotipo:hover {
+    color: bisque !important;
+}
+
+.navbar-custom {
+    background-color: #694236;
+
+}
+
+/*  Barra de búsqueda en el navbar */
+.search-bar {
+    position: relative;
+    border-radius: 50px;
+    overflow: hidden;
+    background: white;
+    border: 1px solid #ccc;
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    padding: 8px 40px 8px 15px;
+    /* espacio para la lupa */
+    border-radius: 50px;
+    font-size: 14px;
+    width: 180px;
+}
+
+.search-bar button {
+    position: absolute;
+    right: 10px;
+    top: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #694236;
+    font-size: 18px;
+}
+
+
+/*todo sobre texto de bienvenida----------------------------------------*/
+.inicio-fondo .container {
+    position: relative;
+    z-index: 2;
+    /* sobre la capa negra */
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.inicio-fondo {
+    height: 500px;
+    /* ajusta el valor a lo que necesites */
+}
+
+.inicio-titulo h1 {
+    font-family: 'MrDafoe';
+    font-size: 80px;
+    color: #fff;
+}
+
+.inicio-eslogan {
+    font-family: 'Nunito';
+    font-size: 25px;
+    color: #fff;
+}
+
+/*todo sobre el carrusel------------------------------------------------*/
+
+.titulo-seccion {
+    background-color: #fde5a7;
+    padding: 10px;
+    font-family: 'Pacifico';
+    font-size: 25px;
+    text-align: left;
+    color: #725740;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+
+.carousel-wrapper {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+
+/*todo sobre el footer------------------------------------------------*/
+footer {
+    background-color: #806a54;
+    /* aquí puedes elegir con la paleta interactiva */
+}
+
+footer i {
+    font-size: 2rem;
+    /* tamaño del ícono */
+    margin: 0 10px;
+    /* espacio entre íconos */
+    color: white;
+    /* color de los íconos */
+}
+
+footer i:hover {
+    color: #ffd700;
+    /* color al pasar el mouse (ejemplo dorado) */
+}
+
+/*para el logo del footer----------------------------*/
+.footer-logo {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -44%);
+    /* mitad afuera, mitad adentro */
+    font-family: 'MrDafoe', cursive;
+    /* misma fuente de tu h1 */
+    font-size: 80px;
+    /* ajusta tamaño */
+    font-weight: 600;
+    color: rgb(237, 206, 168);
+    text-shadow: 2px 2px 6px rgba(57, 52, 38, 0.5);
+    /* sombreado */
+}
+
+/*FIN todo sobre el footer------------------------------------------------*/
+
+/* admin */
+
+.admin-titulo {
+    background-color: #F8E1BF;
+    color: #000000;
+    padding: 10px;
+    border-radius: 8px;
+    font-family: 'Pacifico';
+    text-align: center;
+}
+
+/* carrito de compras estiloo */
+
+.table {
+    border: 1px solid black;
+}
+
+/* Bordes internos */
+.table th,
+.table td {
+    border: 1px solid black;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*atributos especiales para imagen quienes somos---------------------*/
+.imagen-nosotros {
+    display: block;
+    /* para poder centrarla */
+    margin: 0 auto 100px;
+    /* 0 arriba, centrado, 50px debajo */
+    width: 500px;
+    /* 250px original → 500px = 200% */
+    height: 300px;
+    /* 150px original → 300px = 200% */
+}
+
+/*atributos especiales para imagen quienes somos---------------------*/
+
+
+
+
+
+
+
+
+
+/*todo sobre admin panel------------------------------------------------*/
+/* fondo administrador */
+body.admin-page,
+body.admin-login {
+    background: url("../img/fondoadmin.jpg") repeat;
+    background-size: 25%;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+body.admin-page main,
+body.admin-login main {
+    flex: 1;
+}
+
+/*mismo fondo version index---------------------*/
+body.index-background {
+    background: url("../img/fondoadmin.jpg") repeat;
+    background-size: 25%;
+}
+
+/*para los botones de las tarjetas color damasco---------------------*/
+.btn-damasco {
+    background-color: #f4a261 !important;
+    /* damasco */
+    border: none !important;
+    color: #fff5e6 !important;
+    /* beige */
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-damasco:hover {
+    background-color: #e76f51 !important;
+    /* más oscuro en hover */
+    transform: scale(1.03);
+    color: #fffaf0 !important;
+}
+
+/*para los botones de las tarjetas color damasco---------------------*/
+
+/*duplicado para ambos nvar---------------------*/
+body.admin-page .navbar,
+body.admin-login .navbar {
+    background-color: #212529 !important;
+}
+
+body.admin-page .navbar .nav-link,
+body.admin-login .navbar .nav-link,
+body.admin-page .navbar .navbar-logotipo,
+body.admin-login .navbar .navbar-logotipo {
+    color: white !important;
+}
+
+/*duplicado para ambos admin---------------------*/
+
+
+
+/* Overlay */
+body.admin-page #adminOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+/* Panel */
+body.admin-page #adminPanel {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 220px;
+    width: 60%;
+    background-color: white;
+    border: 2px solid #333;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    overflow: auto;
+    border-radius: 8px;
+}
+
+/*todo sobre admin login------------------------------------------------*/
+
+/* Caja de login */
+body.admin-login .login-container {
+    background: white;
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+body.admin-login .login-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}

@@ -1,0 +1,52 @@
+/* Estilos para la pantalla de compra exitosa */
+.compra-exitosa-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+}
+
+.compra-exitosa-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px 32px;
+  max-width: 480px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.compra-exitosa-title {
+  margin: 0;
+  font-size: 28px;
+}
+
+.compra-exitosa-text {
+  margin-top: 12px;
+  font-size: 16px;
+  color: #444;
+}
+
+.compra-exitosa-info {
+  font-size: 14px;
+  color: #666;
+  margin-top: 8px;
+}
+
+.compra-exitosa-btn {
+  margin-top: 18px;
+  background: #28a745;
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.compra-exitosa-btn:hover {
+  filter: brightness(0.95);
+}

@@ -1,0 +1,89 @@
+
+/* Espacio para que el formulario no quede debajo del navbar fijo */
+#formulario {
+  max-width: 500px;
+  margin: 170px auto 40px auto;   padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 9px;
+}
+
+/* Encabezado del formulario */
+#formulario h1 {
+  background-color: #694236;
+  color: white;
+  padding: 12px;
+  text-align: center;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+/* Texto superior */
+.texto-arriba {
+  text-align: center;
+  margin-bottom: 1px;
+  font-size: 13px;
+}
+
+/* Estructura del formulario */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Etiquetas */
+label {
+  margin-top: 12px;
+  margin-bottom: 6px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Campos de entrada */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  font-size: 13px;
+}
+
+/* Contenedor de contraseña con botón */
+.password-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.password-container input {
+  flex: 1;
+}
+
+.password-container button {
+  padding: 6px 12px;
+  background-color: #eee;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* Botón de envío */
+input[type="submit"] {
+  margin-top: 25px;
+  padding: 12px;
+  background-color: #694236;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+  background-color: #694236;
+}

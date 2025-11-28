@@ -1,0 +1,151 @@
+@media (max-width: 992px) {
+  .contenedor { flex-direction: column; gap: 16px; }
+  .filtros {
+    width: 100%;
+    border-right: 0;
+    border-bottom: 1px solid #ddd;
+    padding-right: 0;
+    padding-bottom: 16px;
+  }
+  .catalogo { padding-left: 0; }
+}
+
+.pagina-productos {
+  max-width: none;
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
+  text-align: initial;
+  width: 80vw;        /* fuerza a ocupar todo el ancho del viewport */
+  max-width: 80vw;    /* evita encajonar por otras reglas */
+}
+
+/* Contenedor principal */
+.contenedor {
+  display: flex; /* fila: filtros a la izquierda, catálogo a la derecha */
+  max-width: none;
+  width: 100%;
+  margin: 0;        /* sin márgenes externos */
+  padding: 20px 24px; /* ajusta el “aire” interno aquí */
+  gap: 24px;
+}
+
+/* Filtros a la izquierda */
+.filtros {
+  width: 180px;
+  border-right: 1px solid #ddd;
+  padding-right: 28px;
+}
+
+.filtros h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.filtros ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.filtros li {
+  margin: 8px 0;
+  font-size: 15px;
+}
+
+/* Catálogo */
+.catalogo {
+  flex: 1 1 0;
+  min-width: 0;
+  padding-left: 8px; /* crea espacio desde el borde derecho de filtros */
+
+}
+
+.catalogo h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.catalogo h2 span {
+  color: gray;
+  font-size: 16px;
+}
+
+/* Grid de productos */
+.productos-container {
+  display: grid !important;
+  /* auto-fit colapsa columnas vacías y evita espacio en blanco a la derecha */
+  grid-template-columns: repeat(auto-fill, minmax(240px, 240px));
+  gap: 16px;
+  width: 100%;
+  justify-content: flex-start; /* alinea columnas a la izquierda */
+  justify-items: stretch;      /* cada tarjeta ocupa la columna fija */
+}
+
+/* Tarjetas */
+.tarjeta {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fafafa;
+  overflow: hidden;
+  text-align: center;
+  transition: 0.3s;
+  width: 100%;            /* coincide con la columna fija */
+  box-sizing: border-box; /* incluye padding/borde en el ancho */
+}
+
+/* En pantallas muy pequeñas, deja que la tarjeta ocupe el ancho */
+@media (max-width: 576px) {
+  .productos-container { grid-template-columns: 1fr; }
+  .tarjeta { width: 100%; }
+}
+
+.tarjeta:hover {
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+}
+
+.tarjeta img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.info {
+  padding: 15px;
+}
+
+.btn_producto {
+  background: #ff7043;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.btn_producto:hover {
+  background: #e55c2b;
+}
+
+h4 {
+  margin: 8px 0;
+  font-size: 18px;
+}
+
+.personas {
+  font-size: 14px;
+  color: gray;
+}
+
+.precio {
+  color: #e53935;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.pagina-productos {
+  margin-bottom: 80px;  /* ← Para separar del footer */
+}
