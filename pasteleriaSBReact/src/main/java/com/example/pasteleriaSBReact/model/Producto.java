@@ -1,6 +1,5 @@
 package com.example.pasteleriaSBReact.model;
 
-import io.swagger.v3.oas.annotations.media.Schema; // IMPORTAMOS PARA SWAGGER
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,17 +12,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Swagger persona sistema") // PARA SIMULAR
-public class Persona {
+public class Producto {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Schema(description = "Nombre persona", example = "Juan", requiredMode = Schema.RequiredMode.REQUIRED)
+
     private String nombre;
-    
-    @Schema(description = "Edad de la persona", example = "25", minimum = "0", maximum = "99")
-    private int edad;
-    
+    private String descripcion;
+    private int precio;
+    private int personas;
+    private String imagen;
+    private String categoria;
 }

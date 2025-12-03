@@ -1,24 +1,24 @@
 import axios from 'axios'
 
-const API_URL="http://localhost:8011/api"
+const API_URL = "http://localhost:8011"
 
-// definir las funciones a utilizar
-export const getPersonas = async()=>{
-    const response = await axios.get(`${API_URL}/personas/all`)
+
+export const getProductos = async () => {
+    const response = await axios.get(`${API_URL}/productos/all`)
     return response.data
 }
 
-export const savePersona = async (persona)=>{
-    const response = await axios.post(`${API_URL}/personas/save`,persona)
+export const saveProducto = async (producto) => {
+    const response = await axios.post(`${API_URL}/productos/save`, producto)
     return response.data
 }
 
-export const deletePersona = async (id)=>{
-    const response = await axios.delete(`${API_URL}/personas/delete/${id}`)
+export const deleteProducto = async (id) => {
+    const response = await axios.delete(`${API_URL}/productos/delete/${id}`)
     return response.data
 }
 
-export const updatePersona = async (id,persona)=>{
-    const response = await axios.put(`${API_URL}/personas/update/${id}`,persona)
+export const updateProducto = async (id, producto) => {
+    const response = await axios.put(`${API_URL}/productos/update/${id}`, producto)
     return response.data
 }

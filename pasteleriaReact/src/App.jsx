@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { deletePersona, getPersonas, savePersona, updatePersona } from "./api_rest";
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
+import { getProductos } from './api_rest.jsx';
 import BarraNav from "./components/BarraNav.jsx";
 import Footer from "./components/Footer.jsx";
 import Home from './components/Home.jsx';
@@ -22,12 +22,12 @@ function App() {
   const [count, setCount] = useState(0);
   const [items, setItems] = useState([]);
 
-  const recuperarPersonas = async() => {
+  const recuperarProductos = async () => {
     try {
-      const data = await getPersonas();
-      setItems(data);
+      const data = await getProductos();
+      setItems(data || []);
     } catch (error) {
-      console.error(error);
+      console.error('Error cargando productos:', error);
     }
   };
 
@@ -53,15 +53,15 @@ function App() {
           </Routes>
 
           <div style={{ padding: '20px', margin: '20px', border: '1px solid #ccc' }}>
-            <h1>Listado de Personas</h1>
+            <h1>Listado de Productos</h1>
             <ul>
               {items.map((item) => (
                 <li key={item.id}>
-                  {item.nombre} - {item.edad}
+                  {item.nombre} - {item.precio} - {item.descripcion} 
                 </li>
               ))}
             </ul>
-            <button onClick={recuperarPersonas}>Cargar Personas</button>
+            <button onClick={recuperarProductos}>Cargar Productos</button>
           </div>
         </main>
 
