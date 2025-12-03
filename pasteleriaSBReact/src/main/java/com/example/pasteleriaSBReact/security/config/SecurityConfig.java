@@ -2,41 +2,48 @@ package com.example.pasteleriaSBReact.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import com.example.pasteleriaSBReact.security.jwt.JwtAuthenticationFilter;
-import com.example.pasteleriaSBReact.security.jwt.JwtUtil;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final JwtUtil jwtUtil;
-    private final UserDetailsService userDetailsService;
-
-    public SecurityConfig(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
-        this.jwtUtil = jwtUtil;
-        this.userDetailsService = userDetailsService;
-    }
+    //inyecta nuestro filtro personalizado de jwt
+    private final JwtAuthenticationFilter jwtAuthFilter;
+    //inyecta el proveedor de autenticacion que configuramos
+    private final AuthenticationProvider authenticationProvider;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        JwtAuthenticationFilter jwtFilter = new JwtAuthenticationFilter(jwtUtil, userDetailsService);
-
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            //desactiva la proteccion csrf que no necesitamos en una api rest stateless
             .csrf(csrf -> csrf.disable())
-            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            //define las reglas de autorizacion para las peticiones http
             .authorizeHttpRequests(auth -> auth
+                //permite las peticiones options para el preflight de cors
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                //define las rutas publicas que no necesitan autenticacion
                 .requestMatchers("/auth/**", "/productos/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                //cualquier otra peticion necesita autenticacion
                 .anyRequest().authenticated()
             )
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+            //configura la gestion de sesiones para que sea sin estado (stateless)
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            //establece nuestro proveedor de autenticacion personalizado
+            .authenticationProvider(authenticationProvider)
+            //añade nuestro filtro de jwt antes del filtro de usuario y contraseña de spring
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { loginService } from './loginServicio';
+import { login } from '../api_rest';
 import '../assets/css/estilo.css';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
 function Login() {
     const navigate = useNavigate();
@@ -10,29 +11,50 @@ function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState("");
 
-    const handleSubmit = (e) => {
-    e.preventDefault();
-    setError("");
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError("");
 
-    if (!email || !password) {
-        setError("Por favor completa todos los campos.");
-        return;
-    }
-
-    if (loginService.verificarCredenciales(email, password)) {
-        ///// DETECTA LOGIN Y USUARIO TIPO
-        if (email === "admin@duoc.cl") {
-            alert("✅ Bienvenido Administrador");
-            navigate("/admin");
-          
-        } else {
-            alert(`✅ Bienvenido ${email}`);
-            navigate("/home");
+        if (!email || !password) {
+            setError("Por favor completa todos los campos.");
+            return;
         }
-    } else {
-        setError("❌ Credenciales incorrectas ❌");
-    }
-};
+
+        try {
+            const data = await login({ email, password });
+            
+            if (data && data.token) {
+                localStorage.setItem('token', data.token);
+                
+                //decodifica el token para saber el rol
+                const decodedToken = jwtDecode(data.token);
+                const userRoles = decodedToken.roles || [];
+
+                alert("✅ Login exitoso.");
+
+                //redirige segun el rol
+                if (userRoles.includes('ADMIN')) {
+                    navigate("/admin");
+                } else {
+                    navigate("/home");
+                }
+
+            } else {
+                throw new Error("El token no fue recibido del backend.");
+            }
+
+        } catch (err) {
+            if (err.response) {
+                if (err.response.status === 401 || err.response.status === 403) {
+                    setError("❌ Credenciales incorrectas o no autorizadas ❌");
+                } else {
+                    setError(`Error del servidor: ${err.response.status}`);
+                }
+            } else {
+                setError("No se pudo conectar con el servidor.");
+            }
+        }
+    };
 
     const handleReset = () => {
         setEmail("");

@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-PasteleriaSbReactApplication<pasteleriaSBReact>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.pasteleriaSBReact.PasteleriaSbReactApplication",
+            "projectName": "pasteleriaSBReact",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
