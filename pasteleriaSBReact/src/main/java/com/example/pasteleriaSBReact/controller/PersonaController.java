@@ -17,13 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.pasteleriaSBReact.model.Persona;
 import com.example.pasteleriaSBReact.repository.PersonaRepository;
-import com.example.pasteleriaSBReact.service.PersonaService; //no se esta usando, borrar?
+import com.example.pasteleriaSBReact.service.PersonaService;
 
-
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+//SE INTEGRO USABILIDADES SWAGGER E IMPORTACIONES
 @RestController
 @RequestMapping("/api/personas")
 @CrossOrigin(origins = "http://localhost:5173")
+@Tag(name = "Personas", description = "Gestión de personas")
 public class PersonaController {
     
     @Autowired
@@ -33,38 +35,41 @@ public class PersonaController {
     private PersonaRepository personaRepository;
 
     @PostMapping("/save")
+    @Operation(summary = "Crear persona")
     public Persona savePersona(@RequestBody Persona per) {
-        return personaService.savePersona(per);        
+        return personaService.savePersona(per);
     }
 
     @GetMapping("/all")
+    @Operation(summary = "Listar personas")
     public List<Persona> getAllPersona() {
         return personaService.getAllPersona();
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deletePersona(@PathVariable Long id){
+    @Operation(summary = "Eliminar persona")
+    public void deletePersona(@PathVariable Long id) {
         personaService.deletePersona(id);
     }
     
     @GetMapping("/find/{id}")
+    @Operation(summary = "Buscar persona por ID")
     public Optional<Persona> getPersonaById(@PathVariable Long id) {
         return personaService.getPersonaId(id);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Persona> 
-        putPersonaById(@PathVariable Long id, @RequestBody Persona entity) {
+    @Operation(summary = "Actualizar persona")
+    public ResponseEntity<Persona> putPersonaById(
+        @PathVariable Long id, 
+        @RequestBody Persona entity) {
         
         return personaRepository.findById(id)
-        .map(personaExiste ->{
+        .map(personaExiste -> {
             personaExiste.setNombre(entity.getNombre());
             personaExiste.setEdad(entity.getEdad());
             Persona personaUpdate = personaRepository.save(personaExiste);
             return ResponseEntity.ok(personaUpdate);
-        }).orElseGet(()-> ResponseEntity.notFound().build());
+        }).orElseGet(() -> ResponseEntity.notFound().build());
     }
-    
-    
 }
-
