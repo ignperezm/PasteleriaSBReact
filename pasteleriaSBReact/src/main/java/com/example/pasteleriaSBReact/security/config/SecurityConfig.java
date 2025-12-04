@@ -10,6 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
 import com.example.pasteleriaSBReact.security.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 
@@ -19,32 +23,38 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    //inyecta nuestro filtro personalizado de jwt
     private final JwtAuthenticationFilter jwtAuthFilter;
-    //inyecta el proveedor de autenticacion que configuramos
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            //desactiva la proteccion csrf que no necesitamos en una api rest stateless
             .csrf(csrf -> csrf.disable())
-            //define las reglas de autorizacion para las peticiones http
             .authorizeHttpRequests(auth -> auth
-                //permite las peticiones options para el preflight de cors
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                //define las rutas publicas que no necesitan autenticacion
                 .requestMatchers("/auth/**", "/productos/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                //cualquier otra peticion necesita autenticacion
                 .anyRequest().authenticated()
             )
-            //configura la gestion de sesiones para que sea sin estado (stateless)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            //establece nuestro proveedor de autenticacion personalizado
             .authenticationProvider(authenticationProvider)
-            //añade nuestro filtro de jwt antes del filtro de usuario y contraseña de spring
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        //este bean configura las reglas de cors de forma explicita y prioritaria
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        //permite el acceso desde el origen de nuestro frontend
+        config.addAllowedOrigin("http://localhost:5173");
+        //permite todos los encabezados
+        config.addAllowedHeader("*");
+        //permite todos los metodos http (get, post, put, etc)
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 }
