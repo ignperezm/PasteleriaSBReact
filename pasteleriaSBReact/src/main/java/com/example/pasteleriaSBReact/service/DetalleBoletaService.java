@@ -12,32 +12,18 @@ public class DetalleBoletaService {
     @Autowired
     private DetalleBoletaRepository detalleBoletaRepository;
 
-    public List<DetalleBoleta> obtenerTodos() {
-        return detalleBoletaRepository.findAll();
-    }
-
-    public DetalleBoleta obtenerPorId(Long id) {
-        return detalleBoletaRepository.findById(id).orElse(null);
-    }
-
     public DetalleBoleta guardar(DetalleBoleta detalleBoleta) {
+        //calculo del subtotal en el backend para seguridad
+        int subtotal = detalleBoleta.getPrecioUnitario() * detalleBoleta.getCantidad();
+        detalleBoleta.setSubtotal(subtotal);
         return detalleBoletaRepository.save(detalleBoleta);
     }
-
-    public DetalleBoleta actualizar(Long id, DetalleBoleta detalleBoleta) {
-        DetalleBoleta detalleExistente = detalleBoletaRepository.findById(id).orElse(null);
-        if (detalleExistente != null) {
-            detalleExistente.setBoleta(detalleBoleta.getBoleta());
-            detalleExistente.setProducto(detalleBoleta.getProducto());
-            detalleExistente.setCantidad(detalleBoleta.getCantidad());
-            detalleExistente.setPrecioUnitario(detalleBoleta.getPrecioUnitario());
-            detalleExistente.setSubtotal(detalleBoleta.getSubtotal());
-            return detalleBoletaRepository.save(detalleExistente);
-        }
-        return null;
-    }
-
-    public boolean eliminar(Long id) {
+    
+    // ... (resto de metodos)
+    public List<DetalleBoleta> obtenerTodos() { return detalleBoletaRepository.findAll(); }
+    public DetalleBoleta obtenerPorId(Long id) { return detalleBoletaRepository.findById(id).orElse(null); }
+    public DetalleBoleta actualizar(Long id, DetalleBoleta detalleBoleta) { return null; } //no se usa por ahora
+    public boolean eliminar(Long id) { 
         if (detalleBoletaRepository.existsById(id)) {
             detalleBoletaRepository.deleteById(id);
             return true;

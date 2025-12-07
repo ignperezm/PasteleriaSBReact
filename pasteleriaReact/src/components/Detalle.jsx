@@ -1,7 +1,6 @@
-// src/pages/Detalle.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { productos } from "../components/dataProductos";
+import { getProductoById } from "../api_rest.jsx"; //usamos la api
 import ImagenProducto from "../components/ImagenProducto";
 import Recomendados from "../components/Recomendados";
 import PopupCarrito from "../components/PopupCarrito";
@@ -11,17 +10,35 @@ function Detalle() {
   const { id } = useParams();
   const [cantidad, setCantidad] = useState(1);
   const [mostrarPopup, setMostrarPopup] = useState(false);
+  const [producto, setProducto] = useState(null); //estado para el producto
 
-  const producto = productos.find((p) => p.id === Number(id));
+  useEffect(() => {
+    const fetchProducto = async () => {
+      try {
+        const data = await getProductoById(id);
+        setProducto(data);
+      } catch (error) {
+        console.error("Error al cargar el producto:", error);
+        setProducto(null); //en caso de error, el producto es nulo
+      }
+    };
+
+    if (id) {
+      fetchProducto();
+    }
+  }, [id]); //se ejecuta cada vez que el id de la url cambia
 
   const agregarAlCarrito = () => {
     if (!producto) return;
     const qty = Math.max(1, Number(cantidad) || 1);
     const raw = localStorage.getItem("carrito");
     const carrito = raw ? JSON.parse(raw) : [];
-    const existente = carrito.find((p) => p.id === producto.id);
-    if (existente) existente.cantidad += qty;
-    else carrito.push({ id: producto.id, cantidad: qty });
+    const existente = carrito.find((p) => p.productoId === producto.id);
+    if (existente) {
+        existente.cantidad += qty;
+    } else {
+        carrito.push({ productoId: producto.id, cantidad: qty });
+    }
     localStorage.setItem("carrito", JSON.stringify(carrito));
     setMostrarPopup(true);
   };
@@ -30,7 +47,7 @@ function Detalle() {
     return (
       <main className="detalle-container">
         <div className="detalle-info">
-          <h2>Producto no encontrado</h2>
+          <h2>Producto no encontrado o cargando...</h2>
         </div>
       </main>
     );
@@ -40,7 +57,8 @@ function Detalle() {
     <>
       <main className="detalle-container">
         <div className="detalle-imagen">
-          <ImagenProducto src={producto.imagen} alt={producto.nombre} />
+          {/*la imagen ahora viene de la api*/}
+          <ImagenProducto src={`/img/${producto.imagen}`} alt={producto.nombre} /> 
         </div>
 
         <div className="detalle-info">
@@ -66,7 +84,8 @@ function Detalle() {
         </div>
       </main>
 
-      <Recomendados productos={productos} actualId={id} />
+      {/*los productos recomendados tambien se deben cargar de la api*/}
+      {/*<Recomendados productos={productos} actualId={id} />*/}
 
       {mostrarPopup && (
         <PopupCarrito producto={producto} onClose={() => setMostrarPopup(false)} />

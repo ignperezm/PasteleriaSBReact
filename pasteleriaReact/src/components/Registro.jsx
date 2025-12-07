@@ -1,38 +1,57 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { register } from "../api_rest";
 import '../assets/css/estilo.css';
 import '../assets/css/registro.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import './Registro.logic.js'; // Importa la lógica antes de usarla
 
 function Registro() {
-    const [formData, setFormData] = useState(window.RegistroLogic.initialState());
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        nombre: ''
+,        email: ''
+,        password: ''
+,        confirmPassword: ''
+    });
+    const [error, setError] = useState("");
 
-    // Manejar cambios en los inputs
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => window.RegistroLogic.handleChange(prev, name, value));
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    // Mostrar/ocultar contraseña
-    const togglePassword = (field) => {
-        setFormData((prev) => window.RegistroLogic.togglePassword(prev, field));
-    };
-
-    // Validar y enviar el formulario
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const result = window.RegistroLogic.validateSubmit(formData);
-        if (!result.ok) {
-            alert(result.message);
+        setError("");
+
+        if (!formData.nombre || !formData.email || !formData.password || !formData.confirmPassword) {
+            setError("Todos los campos son obligatorios.");
             return;
         }
-        alert(result.message);
-        console.log(formData);
-    };
 
-    const handleReset = () => {
-        setFormData(window.RegistroLogic.resetForm());
+        if (formData.password !== formData.confirmPassword) {
+            setError("Las contraseñas no coinciden.");
+            return;
+        }
+
+        try {
+            //en el backend se asigna el rol de USER por defecto
+            await register({ 
+                nombre: formData.nombre, 
+                email: formData.email, 
+                password: formData.password 
+            });
+
+            alert("¡Registro exitoso! Ahora puedes iniciar sesión.");
+            navigate("/login");
+
+        } catch (err) {
+            console.error("Error en el registro:", err);
+            if (err.response && err.response.data) {
+                setError(err.response.data.message || "El correo ya está en uso o hubo un error.");
+            } else {
+                setError("No se pudo conectar con el servidor.");
+            }
+        }
     };
 
     return (
@@ -42,23 +61,15 @@ function Registro() {
                 ¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a>
             </p>
 
-            <form onSubmit={handleSubmit} onReset={handleReset}>
+            {error && <div className="error-message">{error}</div>}
+
+            <form onSubmit={handleSubmit}>
                 <label htmlFor="nombre">Nombre:</label>
                 <input
                     type="text"
                     id="nombre"
                     name="nombre"
                     value={formData.nombre}
-                    onChange={handleChange}
-                    required
-                />
-
-                <label htmlFor="apellido">Apellidos:</label>
-                <input
-                    type="text"
-                    id="apellido"
-                    name="apellido"
-                    value={formData.apellido}
                     onChange={handleChange}
                     required
                 />
@@ -75,45 +86,26 @@ function Registro() {
                 />
 
                 <label htmlFor="password">Contraseña:</label>
-                <div className="password-container">
-                    <input
-                        type={formData.showPassword ? "text" : "password"}
-                        id="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
-                    <button
-                        type="button"
-                        className="btn-toggle"
-                        onClick={() => togglePassword("showPassword")}
-                    >
-                        {formData.showPassword ? "Ocultar" : "Mostrar"}
-                    </button>
-                </div>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                />
 
                 <label htmlFor="confirmPassword">Confirmar contraseña:</label>
-                <div className="password-container">
-                    <input
-                        type={formData.showConfirmPassword ? "text" : "password"}
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        required
-                    />
-                    <button
-                        type="button"
-                        className="btn-toggle"
-                        onClick={() => togglePassword("showConfirmPassword")}
-                    >
-                        {formData.showConfirmPassword ? "Ocultar" : "Mostrar"}
-                    </button>
-                </div>
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    required
+                />
 
-                <input type="submit" value="Guardar" className="btn-guardar" />
-                <input type="reset" value="Limpiar" className="btn-limpiar" />
+                <input type="submit" value="Registrarse" className="btn-guardar" />
             </form>
         </section>
     );

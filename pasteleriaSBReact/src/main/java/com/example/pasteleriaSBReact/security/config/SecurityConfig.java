@@ -2,11 +2,11 @@ package com.example.pasteleriaSBReact.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -29,10 +29,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            .cors(withDefaults())
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers("/auth/**", "/productos/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                .requestMatchers(
+                    "/auth/**", 
+                    "/productos/**",
+                    "/v3/api-docs/**", 
+                    "/swagger-ui/**", 
+                    "/swagger-ui.html"
+                ).permitAll()
+                //cualquier usuario logueado puede acceder a las boletas y sus detalles
+                .requestMatchers("/boletas/**", "/detalles/**").authenticated() 
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -44,15 +52,11 @@ public class SecurityConfig {
 
     @Bean
     public CorsFilter corsFilter() {
-        //este bean configura las reglas de cors de forma explicita y prioritaria
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        //permite el acceso desde el origen de nuestro frontend
         config.addAllowedOrigin("http://localhost:5173");
-        //permite todos los encabezados
         config.addAllowedHeader("*");
-        //permite todos los metodos http (get, post, put, etc)
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);

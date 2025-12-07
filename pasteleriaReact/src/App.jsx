@@ -44,6 +44,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path="/carrito" element={<Carrito />} />
           </Routes>
         </main>
 
