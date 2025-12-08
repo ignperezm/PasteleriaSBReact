@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getProductos, guardarBoleta, guardarDetalleBoleta } from "../api_rest";
+import Boleta from './Boleta';
+import { jwtDecode } from 'jwt-decode';
 
 const Carrito = () => {
   const navigate = useNavigate();
@@ -9,6 +11,7 @@ const Carrito = () => {
   const [boletaGenerada, setBoletaGenerada] = useState(null);
   const [mensaje, setMensaje] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [usuario, setUsuario] = useState(null);
 
   useEffect(() => {
     const fetchDatos = async () => {
@@ -18,6 +21,12 @@ const Carrito = () => {
             setProductos(productosData || []);
             const carritoRaw = localStorage.getItem("carrito");
             setCarrito(carritoRaw ? JSON.parse(carritoRaw) : []);
+            
+            const token = localStorage.getItem('token');
+            if (token) {
+                const decodedToken = jwtDecode(token);
+                setUsuario({ nombre: decodedToken.nombre, email: decodedToken.sub });
+            }
         } catch (error) {
             console.error("Error al cargar datos iniciales:", error);
         } finally {
@@ -42,6 +51,12 @@ const Carrito = () => {
 
   const finalizarCompra = async () => {
     if (carrito.length === 0) return;
+    if (!usuario) { 
+        alert("Debes iniciar sesión para comprar.");
+        navigate("/login");
+        return;
+    }
+
     setMensaje("Procesando compra...");
     try {
         const nuevaBoleta = { fecha: new Date().toISOString(), total: total };
@@ -75,10 +90,7 @@ const Carrito = () => {
   return (
     <main className="contenedor" style={{ paddingBottom: "160px" }}>
       {boletaGenerada ? (
-        <section className="tabla-section">
-            <h2>¡Compra Exitosa!</h2>
-            {/* ... (la vista de la boleta se mantiene igual) ... */}
-        </section>
+        <Boleta boleta={boletaGenerada} usuario={usuario} />
       ) : (
         <section id="carrito-contenido">
             <h2>Resumen de tu compra</h2>

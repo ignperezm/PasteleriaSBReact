@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { login } from '../api_rest';
 import '../assets/css/estilo.css';
-import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
 function Login() {
-    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -32,11 +30,11 @@ function Login() {
 
                 alert("✅ Login exitoso.");
 
-                //redirige segun el rol
+                //redirige segun el rol y recarga la pagina
                 if (userRoles.includes('ADMIN')) {
-                    navigate("/admin");
+                    window.location.assign("/admin");
                 } else {
-                    navigate("/home");
+                    window.location.assign("/home");
                 }
 
             } else {

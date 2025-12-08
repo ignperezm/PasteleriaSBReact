@@ -1,0 +1,120 @@
+.boleta-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    background-color: #f9f9f9;
+}
+
+.boleta-card {
+    width: 100%;
+    max-width: 600px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.boleta-header, .boleta-subheader, .boleta-cliente, .boleta-items, .boleta-total, .boleta-footer {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.boleta-header {
+    text-align: center;
+}
+.boleta-header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 24px;
+}
+.boleta-header p {
+    margin: 4px 0;
+    color: #666;
+}
+
+.boleta-subheader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.boleta-subheader h3 {
+    margin: 0;
+    font-size: 20px;
+    color: #444;
+}
+.boleta-subheader p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.boleta-cliente h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #444;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+.boleta-cliente p {
+    margin: 5px 0;
+    font-size: 15px;
+}
+
+.boleta-items-header, .boleta-item-row {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+    gap: 10px;
+    padding: 10px 0;
+    align-items: center;
+}
+
+.boleta-items-header {
+    font-weight: bold;
+    color: #333;
+    border-bottom: 2px solid #ddd;
+}
+
+.boleta-item-row {
+    font-size: 15px;
+    color: #555;
+    border-bottom: 1px solid #f2f2f2;
+}
+.boleta-item-row:last-child {
+    border-bottom: none;
+}
+
+.boleta-total {
+    text-align: right;
+    padding-top: 20px;
+    border-bottom: none;
+}
+.boleta-total h4 {
+    margin: 0;
+    font-size: 22px;
+    color: #2c3e50;
+}
+
+.boleta-footer {
+    text-align: center;
+    padding-top: 20px;
+    border-bottom: none;
+    background-color: #f9f9f9;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.btn-volver {
+    background-color: #3498db;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-volver:hover {
+    background-color: #2980b9;
+}

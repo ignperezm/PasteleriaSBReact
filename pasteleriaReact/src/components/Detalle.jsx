@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getProductoById } from "../api_rest.jsx"; //usamos la api
+import { getProductoById, getProductos } from "../api_rest.jsx"; //usamos la api
 import ImagenProducto from "../components/ImagenProducto";
 import Recomendados from "../components/Recomendados";
 import PopupCarrito from "../components/PopupCarrito";
@@ -11,6 +11,7 @@ function Detalle() {
   const [cantidad, setCantidad] = useState(1);
   const [mostrarPopup, setMostrarPopup] = useState(false);
   const [producto, setProducto] = useState(null); //estado para el producto
+  const [productos, setProductos] = useState([]); //estado para todos los productos
 
   useEffect(() => {
     const fetchProducto = async () => {
@@ -27,6 +28,18 @@ function Detalle() {
       fetchProducto();
     }
   }, [id]); //se ejecuta cada vez que el id de la url cambia
+
+  useEffect(() => {
+    const fetchAllProductos = async () => {
+        try {
+            const data = await getProductos();
+            setProductos(data || []);
+        } catch (error) {
+            console.error("Error al cargar todos los productos:", error);
+        }
+    };
+    fetchAllProductos();
+  }, []);
 
   const agregarAlCarrito = () => {
     if (!producto) return;
@@ -85,7 +98,7 @@ function Detalle() {
       </main>
 
       {/*los productos recomendados tambien se deben cargar de la api*/}
-      {/*<Recomendados productos={productos} actualId={id} />*/}
+      <Recomendados productos={productos} actualId={id} />
 
       {mostrarPopup && (
         <PopupCarrito producto={producto} onClose={() => setMostrarPopup(false)} />
